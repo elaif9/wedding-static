@@ -1,0 +1,1082 @@
+/* =========================================================
+   Tema 3D Motion 18 - Static Replica
+   Tema: Betawi Wedding
+   ========================================================= */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@font-face {
+  font-family: 'aston-script';
+  src: url('../assets/fonts/Aston-Script.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --primary: #235430;
+  --primary-light: #2f6a40;
+  --cream: #FFFCF3;
+  --cream-trans: #FFFCF3ED;
+  --text: #333333;
+  --white: #ffffff;
+  --gold: #e8b904;
+  --teal: #01928B;
+  --line: #e8c89c;
+  --shadow: 0 6px 20px rgba(0,0,0,.15);
+  --cover-mobile-w: 50%;
+}
+
+html, body {
+  font-family: 'Cormorant Infant', 'Nunito Sans', serif;
+  color: var(--text);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; -webkit-tap-highlight-color: transparent; }
+a { -webkit-tap-highlight-color: transparent; text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+ul { list-style: none; }
+hr { border: 0; border-top: 1px solid var(--line); margin: .5rem 0; }
+
+.playball { font-family: 'Playball', cursive; }
+.section-title { font-family: 'Cormorant Infant', serif; font-weight: 600; font-size: 28px; text-align: center; color: var(--text); }
+.section-title-white { font-family: 'Pinyon Script', cursive; font-weight: 500; font-size: 28px; text-align: center; color: var(--white); }
+.section-lead { text-align: center; font-size: 15px; line-height: 1.6; padding: 0 24px; max-width: 460px; margin: 0 auto; color: var(--text); }
+.divider { height: 1px; background: var(--line); width: 80%; margin: 12px auto; }
+
+/* =========================================================
+   BACKGROUND DEKORASI (fixed di belakang konten, persis referensi)
+   - Lebar 67% dari viewport (kolom kiri Elementor)
+   - position: fixed dengan z-index 0, selalu di belakang konten
+   ========================================================= */
+.bg-deco {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 67%;
+  z-index: 0;
+  background: url('../assets/img/Betawi-Fallback.jpeg') center/cover;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg-deco-overlay {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,.25);
+}
+.bg-deco-right {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 450px;
+  z-index: 0;
+  background: url('../assets/img/Betawi-Backgroud.jpeg') center top / cover no-repeat;
+  pointer-events: none;
+}
+.bg-deco-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--text);
+  width: 80%;
+}
+.bg-deco-eyebrow {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 30px; font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.bg-deco-names {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 57px; color: var(--primary);
+  margin: 0 0 16px; line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.bg-deco-date {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 16px; color: var(--text);
+  letter-spacing: 2px;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* =========================================================
+   COVER + semua section konten: max-width 450px di kolom kanan
+   Mengikuti pola referensi Elementor: kolom 33% berisi semua konten
+   ========================================================= */
+.cover {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  margin-left: auto; /* dorong ke kanan, di samping bg-deco */
+  background: url('../assets/img/Betawi-Backgroud.jpeg') center/cover;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 60px 32px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(rgba(255,255,255,0) 35%, rgb(254,253,253) 80%);
+  z-index: 0;
+}
+.cover > * { position: relative; z-index: 1; }
+
+.cover-eyebrow {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 30px; font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.cover-photo {
+  width: 70%; max-width: 220px;
+  aspect-ratio: 1/1.3;
+  margin: 0 auto 20px;
+  background: url('../assets/img/0-Cover.jpg') center/cover;
+  border-radius: 50%; /* OVAL seperti referensi */
+  box-shadow: var(--shadow);
+  padding: 8px; /* ruang dalam border oval */
+  background-clip: padding-box;
+  border: 2px solid var(--primary);
+}
+.cover-names {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 34px; color: var(--primary);
+  margin: 0 0 12px; line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.cover-yth, .cover-note {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 15px; line-height: 1.5; color: var(--text);
+  margin: 0 0 10px;
+  max-width: 360px;
+}
+.cover-note { font-size: 11px; font-style: italic; opacity: .85; font-family: 'Aref Ruqaa', serif; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-family: 'Aref Ruqaa', serif;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: normal;
+  text-transform: none;
+  box-shadow: 0 4px 12px rgba(35,84,48,.4);
+  transition: transform .2s;
+}
+.btn-primary:hover { transform: scale(1.05); }
+.btn-primary i { font-size: 16px; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,.93);
+  color: var(--primary);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: 'Aref Ruqaa', serif;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(75deg, #235430 0%, #0b1c10 100%);
+  color: var(--white);
+  border: 0;
+  padding: 5px 15px;
+  border-radius: 25px;
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px; font-weight: 400;
+  line-height: 14px;
+}
+.btn-outline i { color: var(--white); font-size: 14px; }
+
+.btn-music {
+  position: fixed; bottom: 20px; right: 20px;
+  z-index: 9000;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 18px;
+  display: none; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+  z-index: 9998;
+}
+.btn-music.show { display: flex; }
+.btn-music.playing { animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================================================
+   MAIN CONTENT - max-width 450px di kolom kanan (persis referensi)
+   Semua section dibatasi lebarnya, dengan bg-deco fixed di belakang
+   ========================================================= */
+.main-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  margin-left: auto; /* dorong konten ke kolom 33% kanan */
+  background: transparent; /* biarkan bg-deco-right (fixed) tampil di section transparan */
+}
+.section {
+  position: relative;
+  padding: 60px 16px;
+  max-width: 450px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* =========================================================
+   SLIDE AWAL (Motion)
+   ========================================================= */
+.motion-section {
+  position: relative;
+  width: 100%; max-width: 100%;
+  height: 100vh; min-height: 600px;
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cream);
+}
+.motion-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.motion-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 1;
+}
+.motion-content {
+  position: relative; z-index: 2;
+  text-align: center; color: var(--text);
+  padding: 24px;
+}
+.motion-eyebrow {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 30px; font-weight: 500;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.motion-names {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 50px; color: var(--primary);
+  margin: 0 0 20px; line-height: 1.05; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.motion-names span {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 24px; color: var(--text);
+  font-weight: normal;
+  text-transform: none;
+}
+.motion-date {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 15px; color: var(--text);
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+.motion-mouse {
+  width: 60px; margin: 0 auto;
+}
+.motion-mouse dotlottie-player { width: 60px; height: 60px; }
+
+/* =========================================================
+   QUOTE / MONOGRAM
+   ========================================================= */
+.quote-section {
+  background: var(--primary);
+  padding: 0;
+  max-width: 100%;
+}
+.section-motif-top, .section-motif-bottom {
+  height: 90px;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  position: relative; z-index: 3;
+}
+.section-motif-top {
+  background-image: url('../assets/img/Betawi-Motif-Atas-min.png');
+  background-position: center top;
+}
+.section-motif-bottom {
+  background-image: url('../assets/img/Betawi-Motif-Bawah-min.png');
+  background-position: center bottom;
+}
+.section-frame {
+  position: relative;
+  background: var(--cream);
+  padding: 0;
+  max-width: 390px;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.frame-bg {
+  position: absolute; inset: 0;
+  background: url('../assets/img/Betawi-Backgroud.jpeg') center/cover;
+  opacity: .35;
+  z-index: 0;
+}
+.frame-pattern {
+  position: absolute; inset: 0;
+  background: var(--cream-trans);
+  z-index: 1;
+}
+.kenburns-slide {
+  position: relative; height: 360px; overflow: hidden;
+  z-index: 2;
+}
+.kb-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0;
+  animation: kenburnsFade 12s infinite;
+  transform: scale(1.05);
+}
+.kb-slide:nth-child(1) { animation-delay: 0s; }
+.kb-slide:nth-child(2) { animation-delay: 4s; }
+.kb-slide:nth-child(3) { animation-delay: 8s; }
+@keyframes kenburnsFade {
+  0%   { opacity: 0; transform: scale(1.0); }
+  10%  { opacity: 1; transform: scale(1.08); }
+  33%  { opacity: 1; transform: scale(1.15); }
+  43%  { opacity: 0; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.0); }
+}
+.frame-body {
+  position: relative; z-index: 2;
+  padding: 50px 24px;
+  text-align: center;
+  background: var(--cream-trans);
+}
+.quote-mono {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; margin-bottom: 28px;
+}
+.quote-letter {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 70px; color: var(--primary);
+  line-height: 1;
+  font-weight: 500;
+}
+.quote-mono .quote-letter:first-child { position: relative; top: -22px; }
+.quote-mono .quote-letter:last-child { position: relative; top: 22px; }
+.quote-ornament {
+  width: 35px; height: 35px;
+  object-fit: contain;
+  position: relative; top: 22px;
+}
+.quote-text {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px; line-height: 1.8;
+  color: var(--text);
+  max-width: 380px; margin: 0 auto 18px;
+  font-style: italic;
+  font-weight: 600;
+}
+.quote-source {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 16px; color: var(--text);
+  font-weight: 600;
+}
+
+/* =========================================================
+   KEDUA MEMPELAI
+   ========================================================= */
+.couple-section {
+  position: relative;
+  max-width: 100%;
+  padding: 90px 0 0;
+  background: transparent;
+}
+.couple-section .section-title {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text);
+}
+.couple-section .section-lead,
+.couple-section .section-lead b {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 400;
+  color: var(--text);
+}
+.couple-inner {
+  position: relative; z-index: 2;
+  max-width: 418px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  text-align: center;
+  background: rgba(255, 252, 243, 0.93);
+  border: 4px solid var(--primary);
+  border-radius: 300px;
+  overflow: hidden;
+}
+.couple-inner > * { position: relative; z-index: 1; }
+.couple-icon {
+  width: 120px; margin: 0 auto 24px;
+}
+.couple-card {
+  margin: 32px 0;
+}
+.couple-photo-wrap {
+  position: relative;
+  width: 210px; height: 280px;
+  margin: 0 auto 24px;
+}
+.couple-photo-front {
+  position: absolute; inset: 0;
+  background-color: #FFF;
+  background-size: cover; background-position: center center;
+  border-radius: 125px;
+  box-shadow: 0 0 25px rgba(0,0,0,.1);
+  z-index: 1;
+}
+.couple-photo-back {
+  position: absolute; top: -15px; right: -45px;
+  width: 150px; aspect-ratio: 250 / 402;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+.couple-photo-decor {
+  position: absolute; bottom: 5px; left: -25px;
+  width: 95px; height: auto;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+}
+.couple-photo-wrap.flip .couple-photo-back { right: auto; left: -45px; }
+.couple-photo-wrap.flip .couple-photo-decor { left: auto; right: -25px; }
+.flip-x { transform: scaleX(-1); }
+.couple-name-green {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 28px; color: var(--primary);
+  font-weight: 500; margin-bottom: 6px;
+  line-height: 1.1;
+}
+.couple-name {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 26px; color: var(--text);
+  font-weight: 600; margin-bottom: 14px;
+}
+.couple-parent {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px; line-height: 1.6;
+  color: var(--text); margin-bottom: 6px;
+  font-weight: 400;
+}
+.couple-parent:first-of-type { font-weight: 700; }
+.couple-divider {
+  margin: 30px auto;
+  width: 90px;
+}
+.couple-divider img { width: 90px; }
+
+/* =========================================================
+   SAVE THE DATE + AKAD/RESEPSI WRAPPER
+   ========================================================= */
+.std-event-wrapper {
+  position: relative;
+  max-width: 100%;
+  background: url('../assets/img/Betawi-Backgroud.jpeg') center/cover;
+}
+.std-event-bg {
+  position: absolute; inset: 0;
+  background: rgba(35,84,48,0.9);
+  z-index: 0;
+}
+.std-event-wrapper > *:not(.std-event-bg) {
+  position: relative;
+  z-index: 1;
+}
+.std-event-spacer {
+  height: 113px;
+}
+.std-event-spacer-2 {
+  height: 72px;
+}
+
+/* =========================================================
+   SAVE THE DATE
+   ========================================================= */
+.savedate-section {
+  position: relative;
+  max-width: 100%;
+  padding: 0;
+  min-height: 600px;
+  display: block;
+  margin-top: 0;
+}
+.savedate-slides {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.savedate-slides .kb-slide {
+  animation: kenburnsFade 9s infinite;
+}
+.savedate-slides .kb-slide:nth-child(1) { animation-delay: 0s; }
+.savedate-slides .kb-slide:nth-child(2) { animation-delay: 3s; }
+.savedate-slides .kb-slide:nth-child(3) { animation-delay: 6s; }
+.savedate-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(rgba(85,0,0,0) 45%, rgb(35,84,48) 100%);
+  z-index: 1;
+}
+.savedate-inner {
+  position: relative; z-index: 2;
+  max-width: 480px;
+  margin: 250px auto 0;
+  text-align: center;
+}
+.countdown {
+  display: flex; justify-content: center;
+  gap: normal; margin: 30px 0;
+}
+.cd-item {
+  background: transparent;
+  color: var(--white);
+  border-radius: 8px;
+  padding: 12px 0;
+  min-width: 69px;
+  height: 64px;
+  text-align: center;
+  border: 1px solid var(--white);
+}
+.cd-digits {
+  display: block;
+  font-family: 'Cormorant Infant', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+.cd-label {
+  display: block;
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 12px;
+  color: var(--white);
+  margin-top: 6px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* =========================================================
+   EVENT (Akad & Resepsi)
+   ========================================================= */
+.event-section {
+  position: relative;
+  max-width: 302px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  background: transparent;
+  border-radius: 250px;
+  overflow: hidden;
+}
+.event-bg {
+  position: absolute; inset: 0;
+  background: rgba(255,251,244,0.87);
+  z-index: 0;
+}
+.event-card {
+  position: relative; z-index: 2;
+  max-width: 100%;
+  margin: 0 auto;
+  background: transparent;
+  padding: 30px 20px;
+  text-align: center;
+  border-radius: 0;
+  box-shadow: none;
+}
+.event-title {
+  font-size: 26px; color: var(--text);
+  font-weight: 700; margin-bottom: 6px;
+  font-family: 'Cormorant Infant', serif;
+  text-transform: uppercase;
+}
+.event-day {
+  font-size: 42px; color: #000;
+  font-weight: 500; margin: 8px 0;
+  font-family: 'Pinyon Script', cursive;
+}
+.event-date {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 60px; color: var(--primary);
+  font-weight: 700; line-height: 1;
+  margin: 4px 0;
+}
+.event-month-year {
+  display: flex; justify-content: center; gap: 14px;
+  font-family: 'Cormorant Infant', serif;
+  font-size: 20px; color: var(--text);
+  font-weight: 700;
+  margin: 8px 0 14px;
+}
+.event-time {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 18px; color: var(--text);
+  font-weight: 700;
+  margin: 8px 0 16px;
+}
+.event-time i { margin-right: 6px; color: var(--primary); }
+.event-loc-title {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 20px; color: var(--text);
+  font-weight: 700; margin: 12px 0 8px;
+}
+.event-loc {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px; line-height: 1.5;
+  color: var(--text); margin-bottom: 20px;
+}
+.event-section .btn-primary {
+  background: linear-gradient(75deg, #235430 0%, #0b1c10 100%);
+  padding: 10px 25px;
+  font-size: 14px;
+  border-radius: 25px;
+}
+
+/* =========================================================
+   DRESSCODE
+   ========================================================= */
+.dresscode-section {
+  background: transparent;
+  max-width: 342px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.dresscode-inner {
+  max-width: 100%;
+  margin: 20px auto;
+  text-align: center;
+  background: rgba(255,252,243,0.93);
+  padding: 30px 20px;
+}
+.dresscode-section .section-title {
+  font-family: 'aston-script', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+}
+.dresscode-section .section-lead {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px;
+}
+.dresscode-swatches {
+  display: flex; justify-content: center; gap: 16px;
+  margin-top: 30px;
+}
+.swatch {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,.08);
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   LOVE STORY
+   ========================================================= */
+.story-section {
+  position: relative;
+  max-width: 100%;
+  background: var(--primary);
+  padding: 70px 16px;
+}
+.story-bg {
+  position: absolute; inset: 0;
+  background: rgba(35,84,48,.85) url('../assets/img/Betawi-Backgroud.jpeg') center/cover;
+  background-blend-mode: multiply;
+  z-index: 0;
+  opacity: .25;
+}
+.story-inner {
+  position: relative; z-index: 2;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.timeline {
+  position: relative;
+  margin-top: 40px;
+  padding: 0 10px;
+}
+.timeline-line {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 2px; background: rgba(255,255,255,.3);
+  transform: translateX(-50%);
+}
+.timeline-line-progress {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 0;
+  background: var(--gold);
+  transition: height .3s;
+}
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+}
+.timeline-item:nth-child(odd) {
+  left: 0; text-align: right;
+  padding-right: 50px;
+}
+.timeline-item:nth-child(even) {
+  left: 50%; text-align: left;
+  padding-left: 50px;
+}
+.timeline-card {
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: inline-block;
+  text-align: left;
+  max-width: 280px;
+  width: 100%;
+}
+.timeline-card-img {
+  width: 100%; height: 160px;
+  background-size: cover; background-position: center;
+}
+.timeline-card-body { padding: 14px 16px; }
+.timeline-date {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 14px; color: var(--primary);
+  font-weight: 700; margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.timeline-desc {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px; line-height: 1.5;
+  color: var(--text);
+}
+.timeline-point {
+  position: absolute; top: 30px;
+  width: 24px; height: 24px;
+  background: var(--gold);
+  border: 3px solid var(--white);
+  border-radius: 50%;
+  z-index: 3;
+}
+.timeline-item:nth-child(odd) .timeline-point { right: -12px; }
+.timeline-item:nth-child(even) .timeline-point { left: -12px; }
+.timeline-dot { display: block; width: 100%; height: 100%; }
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+.gallery-section {
+  position: relative;
+  max-width: 100%;
+  background: var(--primary);
+  padding: 70px 16px;
+}
+.gallery-bg {
+  position: absolute; inset: 0;
+  background: rgba(35,84,48,.85) url('../assets/img/Betawi-Backgroud.jpeg');
+  background-blend-mode: multiply;
+  opacity: .25; z-index: 0;
+}
+.gallery-section .section-title-white { position: relative; z-index: 2; margin-bottom: 30px; }
+.gallery-grid {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.g-item {
+  display: block; overflow: hidden;
+  aspect-ratio: 2/3;
+  border-radius: 4px;
+}
+.g-item:hover img { transform: scale(1.1); }
+.g-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+
+/* =========================================================
+   WEDDING GIFT
+   ========================================================= */
+.gift-section {
+  background: var(--cream-trans);
+  max-width: 100%;
+  padding: 60px 16px;
+}
+.gift-inner {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+.gift-cards {
+  margin-top: 30px;
+  display: flex; flex-direction: column; gap: 16px;
+  text-align: left;
+}
+.gift-card {
+  position: relative;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 12px;
+  padding: 20px;
+  color: var(--white);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--shadow);
+  background-image:
+    url('../assets/img/bg-card-01.jpg'),
+    linear-gradient(135deg, var(--primary), var(--primary-light));
+  background-blend-mode: overlay;
+  background-size: cover;
+}
+.gift-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(35,84,48,.7);
+  border-radius: 12px;
+}
+.gift-card > * { position: relative; z-index: 1; }
+.bank-logo {
+  width: 90px; background: var(--white);
+  padding: 6px 12px; border-radius: 4px;
+  margin-bottom: 12px;
+}
+.gift-label {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px; color: rgba(255,255,255,.85);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-top: 6px;
+}
+.gift-value {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 18px; color: var(--white);
+  font-weight: 600; margin: 2px 0;
+  letter-spacing: 1px;
+}
+.gift-card-right {
+  text-align: center;
+}
+.chip { width: 70px; margin: 0 auto 10px; }
+.btn-copy {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 600; font-size: 12px;
+  padding: 6px 18px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform .2s;
+}
+.btn-copy:hover { transform: scale(1.05); }
+.btn-copy.shake { animation: shakeAnim .5s; }
+@keyframes shakeAnim {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-6px); }
+  40%,80% { transform: translateX(6px); }
+}
+.gift-kado {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 22px; color: var(--white);
+  font-weight: 600; margin-bottom: 6px;
+}
+.gift-kado-icon {
+  font-size: 50px; color: rgba(255,255,255,.7);
+  margin-bottom: 14px;
+}
+
+/* =========================================================
+   TERIMA KASIH
+   ========================================================= */
+.thanks-section {
+  position: relative;
+  max-width: 100%;
+  padding: 0;
+  background: transparent;
+}
+.thanks-slides {
+  position: relative; z-index: 0;
+  height: 550px;
+  overflow: hidden;
+}
+.thanks-slides .kb-slide { animation: kenburnsFade 9s infinite; }
+.thanks-slides .kb-slide:nth-child(1) { animation-delay: 0s; }
+.thanks-slides .kb-slide:nth-child(2) { animation-delay: 3s; }
+.thanks-slides .kb-slide:nth-child(3) { animation-delay: 6s; }
+.thanks-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(rgba(255,251,244,0) 0%, rgba(255,251,244,0.87) 100%);
+  z-index: 1;
+}
+.thanks-inner {
+  position: relative; z-index: 2;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  text-align: center;
+}
+.thanks-inner .section-title {
+  font-family: 'aston-script', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--text);
+}
+.thanks-inner .section-lead {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 14px;
+  color: var(--text);
+}
+.thanks-from {
+  font-family: 'Aref Ruqaa', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 24px 0 8px;
+}
+.thanks-names {
+  font-family: 'Cormorant Infant', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 6px;
+}
+
+.site-footer {
+  background: var(--primary);
+  color: var(--white);
+  text-align: center;
+  padding: 18px 16px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  max-width: 100%;
+}
+.site-footer a { color: var(--gold); }
+
+/* =========================================================
+   LIGHTBOX
+   ========================================================= */
+.lightbox {
+  position: fixed; inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,.92);
+  display: flex; align-items: center; justify-content: center;
+}
+.lb-close, .lb-prev, .lb-next {
+  position: absolute;
+  background: rgba(255,255,255,.15);
+  color: var(--white);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+.lb-close { top: 20px; right: 20px; }
+.lb-prev { left: 20px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 20px; top: 50%; transform: translateY(-50%); }
+#lbImg { max-width: 90vw; max-height: 85vh; border-radius: 6px; }
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+.toast {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--primary);
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  z-index: 10001;
+  opacity: 0;
+  transition: all .3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* =========================================================
+   REVEAL ANIMATIONS (mirip inv-* Elementor)
+   ========================================================= */
+.inv-atas, .inv-bawah, .inv-kiri, .inv-kanan,
+.inv-zoom-in, .inv-zoom-out, .inv-fade-in {
+  opacity: 0;
+  transition: transform 1.5s ease, opacity 1.5s ease;
+}
+.inv-atas { transform: translateY(50%); }
+.inv-bawah { transform: translateY(-50%); }
+.inv-kiri { transform: translateX(-100%) scale(.93); transition: opacity .5s ease, transform 1.5s ease; }
+.inv-kanan { transform: translateX(100%) scale(.93); transition: opacity .5s ease, transform 1.5s ease; }
+.inv-zoom-in { transform: scale(.9); }
+.inv-zoom-out { transform: scale(1.1); }
+.inv-fade-in { transition: opacity 1.5s ease-in-out; }
+.inv-atas.active, .inv-bawah.active,
+.inv-kiri.active, .inv-kanan.active,
+.inv-zoom-in.active, .inv-zoom-out.active,
+.inv-fade-in.active { transform: none; opacity: 1; }
+
+/* =========================================================
+   RESPONSIVE - Cover + bg-deco (persis referensi)
+   ========================================================= */
+
+/* ----- MOBILE (< 768px): bg-deco hidden, konten full-width ----- */
+@media (max-width: 767px) {
+  .bg-deco { display: none; }
+  .bg-deco-right { width: 100%; }
+  .cover { max-width: 100%; margin: 0; }
+  .main-content { max-width: 100%; margin: 0; }
+  .cover-names { font-size: 34px; }
+}
+
+/* ----- TABLET (768-1023px): bg-deco sisa ruang, konten max 450px ----- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .bg-deco { width: calc(100% - 450px); }
+  .cover, .main-content { max-width: 450px; }
+}
+
+/* ----- DESKTOP (>= 1024px): bg-deco sisa ruang, konten max 450px ----- */
+@media (min-width: 1024px) {
+  .bg-deco { width: calc(100% - 450px); }
+  .cover, .main-content { max-width: 450px; }
+}
+
+/* ----- Small mobile fixes ----- */
+@media (max-width: 380px) {
+  .cover-names { font-size: 34px; }
+  .cover-frame-content .cover-names { font-size: 26px; }
+  .motion-names { font-size: 50px; }
+  .cd-item { min-width: 60px; padding: 12px 6px; }
+  .cd-digits { font-size: 28px; }
+  .event-date { font-size: 56px; }
+  .timeline-item { padding: 16px 20px; }
+  .timeline-item:nth-child(odd) { padding-right: 30px; }
+  .timeline-item:nth-child(even) { padding-left: 30px; }
+  .quote-mono { gap: 8px; }
+  .quote-letter { font-size: 70px; }
+  .quote-ornament { width: 35px; height: 35px; }
+}
