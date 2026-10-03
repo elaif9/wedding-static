@@ -97,9 +97,9 @@
     tryPlayAudio();
 
     // Re-run reveal setelah konten terlihat (karena sebelumnya hidden)
-    setTimeout(() => reveal(), 100);
-    setTimeout(() => reveal(), 2600); // after cover fully hidden
-    setTimeout(() => reveal(), 5000); // fallback
+    setTimeout(() => reveal(), 50);
+    setTimeout(() => reveal(), 500);
+    setTimeout(() => reveal(), 1500);
 
     // Motion video flow
     motionVid.currentTime = 0;
