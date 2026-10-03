@@ -98,6 +98,8 @@
 
     // Re-run reveal setelah konten terlihat (karena sebelumnya hidden)
     setTimeout(() => reveal(), 100);
+    setTimeout(() => reveal(), 2600); // after cover fully hidden
+    setTimeout(() => reveal(), 5000); // fallback
 
     // Motion video flow
     motionVid.currentTime = 0;
@@ -138,6 +140,7 @@
   }
   window.addEventListener('scroll', reveal, { passive: true });
   window.addEventListener('load', reveal);
+  document.addEventListener('DOMContentLoaded', reveal);
 
   /* =========================================================
      COUNTDOWN
