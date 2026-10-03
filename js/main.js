@@ -3,7 +3,7 @@
    - Cover open + audio autoplay (after user interaction)
    - Motion video autoplay after open
    - Scroll reveal animations (.inv-*)
-   - Countdown to 28 Dec 2027
+   - Countdown to 10 Oct 2026
    - Save to Google Calendar
    - Wedding Gift collapse + copy to clipboard
    - Wishes (RSVP) - localStorage as mock backend
@@ -19,8 +19,20 @@
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-  const WEDDING_DATE = new Date('2027-12-28T08:00:00+07:00').getTime() / 1000;
+  const WEDDING_DATE = new Date('2026-10-10T08:00:00+07:00').getTime() / 1000;
   const MOTION_DELAY = 13800; // ms
+
+  /* =========================================================
+     DYNAMIC INVITATION NAME
+     ========================================================= */
+  const invNameEl = $('#inv-name');
+  if (invNameEl) {
+    const params = new URLSearchParams(window.location.search);
+    const invName = params.get('inv');
+    if (invName) {
+      invNameEl.textContent = decodeURIComponent(invName);
+    }
+  }
 
   /* =========================================================
      AUDIO
@@ -157,11 +169,12 @@
      ========================================================= */
   const btnSaveCal = $('#btn-save-cal');
   if (btnSaveCal) {
-    const start = '20271228T010000Z';
-    const end   = '20271229T010000Z';
+    const start = '20261010T040000Z';
+    const end   = '20261010T060000Z';
     const url = 'https://www.google.com/calendar/render?action=TEMPLATE' +
-      '&text=The+Wedding+Of+Putri+%26+Andika' +
-      '&details=The+Wedding+Of+%3A%3Cbr%3E%3Cbr%3EPutri+Cantika+Sari%3Cbr%3E%26amp%3B%3Cbr%3EPutra+Andika+Pratama%3Cbr%3E%3Cbr%3E28+.+12+.+2027' +
+      '&text=Hajatannye+Sekar+%26+Alif' +
+      '&details=Hajatannye+%3A%3Cbr%3E%3Cbr%3ESekar%3Cbr%3E%26amp%3B%3Cbr%3EAlif%3Cbr%3E%3Cbr%3E10+.+10+.+2026' +
+      '&location=Gedung+Serbaguna+Nur+Alam%2C+Pd.+Pesantren+Al+Hamid%2C+Jl.+Raya+Munjul+No.12%2C+Cipayung%2C+Jakarta+Timur' +
       '&dates=' + start + '%2F' + end;
     btnSaveCal.setAttribute('href', url);
   }
