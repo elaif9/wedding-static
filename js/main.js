@@ -82,11 +82,11 @@
   function openCover() {
     // Fade out cover section saja — bg-deco tetap di belakang konten
     if (cover) {
-      cover.style.transition = 'opacity 2.5s ease, height 0s 2.5s';
+      cover.style.transition = 'opacity 1.5s ease, height 0s 1.5s';
       cover.style.opacity = '0';
       setTimeout(() => {
         cover.style.display = 'none';
-      }, 2500);
+      }, 1500);
     }
 
     main.style.display = 'block';
