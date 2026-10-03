@@ -121,6 +121,19 @@
   document.body.style.overflow = 'hidden';
   document.body.style.height   = '100vh';
 
+  // Langsung aktifkan animasi cover saat DOM ready
+  function activateCover() {
+    $$('#cover .inv-zoom-in, #cover .inv-atas, #cover .inv-fade-in').forEach((el) => {
+      const delay = parseInt(el.dataset.delay || '0', 10);
+      setTimeout(() => el.classList.add('active'), delay);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', activateCover);
+  } else {
+    activateCover();
+  }
+
   /* =========================================================
      SCROLL REVEAL (with stagger via data-delay)
      ========================================================= */
